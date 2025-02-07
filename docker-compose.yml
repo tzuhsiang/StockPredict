@@ -1,0 +1,11 @@
+
+services:
+  flask-app:
+    build: .
+    ports:
+      - "8080:5000"
+    volumes:
+      - ./app:/app  # 掛載本機目錄，方便修改 Flask 應用
+    environment:
+      - FLASK_ENV=development
+    restart: always
