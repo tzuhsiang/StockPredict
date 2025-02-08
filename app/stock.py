@@ -54,7 +54,17 @@ def plot_stock_data(data, predicted_data, periods=5):
     plt.plot(data.index, data['Regression_Line'], label='Regression Line', color='blue', linestyle='--', linewidth=1)
 
     # 繪製未來預測股價
-    plt.plot(predicted_data['Date'], predicted_data['Predicted Close'], label=f'Predicted Close Price for Next {periods} Days', color='red', linestyle='--', marker='x')
+    plt.plot(predicted_data['Date'], predicted_data['Predicted Close'], label=f'Predicted Close Price for Next {periods} Days', color='red', linestyle='--')
+
+    # 只標示最後一個目標價 (X 標記)
+    last_date = predicted_data.iloc[-1]['Date']
+    last_price = predicted_data.iloc[-1]['Predicted Close']
+    plt.scatter(last_date, last_price, color='red', marker='x', s=100, label=f'Target Price: {last_price:.2f}')
+
+    # 在 X 標記旁標示數值
+    plt.text(last_date, last_price, f'{last_price:.2f}', fontsize=12, verticalalignment='bottom', horizontalalignment='right', color='red', fontweight='bold')
+
+
 
     # 設定標題與標籤
     plt.title(f"Stock Price Prediction for the Next {periods} Days")
@@ -76,6 +86,9 @@ def plot_stock_data(data, predicted_data, periods=5):
     plt.xticks(rotation=45)
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
     plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=interval))
+
+    # 讓圖表底部有更多空間，避免 X 軸標籤被裁剪
+    plt.subplots_adjust(bottom=0.2)
 
     # 顯示網格與圖例
     plt.grid(True)
