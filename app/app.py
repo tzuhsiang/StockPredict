@@ -9,6 +9,7 @@ def index():
     stock_code = ""
     days = 365
     future_days = 5
+    target_date = None   # 新增目標價日期
     target_price = None  # 新增目標價變數
 
     if request.method == 'POST':
@@ -42,7 +43,12 @@ def index():
             # 目標價為預測的最後一天股價
             target_price = round(predicted_data.iloc[-1]['Predicted Close'], 2)
 
-    return render_template('index.html', plot_image=plot_image, target_price=target_price,
+            # 🔹 獲取最後一天的預測日期 & 目標價格
+            target_date = predicted_data.iloc[-1]['Date'].strftime('%Y-%m-%d')
+            target_price = round(predicted_data.iloc[-1]['Predicted Close'], 2)
+
+
+    return render_template('index.html', plot_image=plot_image, target_price=target_price,target_date=target_date,
                            stock_code=stock_code, days=days, future_days=future_days)
 
 
